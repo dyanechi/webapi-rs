@@ -2,6 +2,8 @@
 pub enum MetaKind {
     // Meta custom type
     Custom(&'static str, &'static str),
+    HttpEquiv(&'static str, &'static str),
+    Property(&'static str, &'static str),
 
     // Meta "name" types
     Abstract(&'static str),
@@ -98,6 +100,8 @@ impl MetaTag {
         let (key, value, content) = match kind {
             // Meta Custom type
             MetaKind::Custom(prop, c) => ("name", prop, c),
+            MetaKind::HttpEquiv(prop, c) => ("http-equiv", prop, c),
+            MetaKind::Property(prop, c) => ("property", prop, c),
 
             // Meta "name" types
             MetaKind::Abstract(c) => ("name", "abstract", c),

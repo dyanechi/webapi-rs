@@ -2,7 +2,6 @@ use std::{fmt::Display, fs, cell::RefCell};
 
 use super::tags::*;
 
-
 #[derive(Debug)]
 pub enum WebApiErr {
     DeployErr(&'static str),
@@ -92,37 +91,40 @@ pub struct HtmlMetadata { }
 
 
 pub struct HtmlHead {
-    title: Option<String>,
-    charset: Option<String>,
-    meta: Option<RefCell<Vec<MetaTag>>>,
+    title: String,
+    charset: String,
+    meta: RefCell<Vec<MetaTag>>,
 }
 impl Default for HtmlHead {
     fn default() -> Self {
         Self {
-            title: Some("WebApi Test Website".into()),
-            charset: Some("utf-8".into()),
-            meta: None,
+            title: "WebApi Test Website".into(),
+            charset: "utf-8".into(),
+            meta: RefCell::new(vec![]),
         }
     }
 }
 impl Stringify for HtmlHead {
     fn stringify(&self) -> String {
-        let title = match self.title.as_ref() {
-            Some(x) => x,
-            None => ""
-        };
-        let charset = match self.charset.as_ref() {
-            Some(x) => x,
-            None => "utf-8"
-        };
-        let meta_tags: String = match self.meta.as_ref() {
-            Some(x) => x.borrow().iter().map(|m| format!(
-                "\n\t<meta {}=\"{}\" content=\"{}\" />", m.key(), m.value(), m.content()
-            )).collect(),
-            None => "".into(),
-        };
-        let title: String = format!("\n\t<title>{title}</title>");
-        let charset: String = format!("\n\t<meta charset=\"{charset}\" />");
+        // let title = match self.title.as_ref() {
+        //     Some(x) => x,
+        //     None => ""
+        // };
+        // let charset = match self.charset.as_ref() {
+        //     Some(x) => x,
+        //     None => "utf-8"
+        // };
+        // let meta_tags: String = match self.meta.as_ref() {
+        //     Some(x) => x.borrow().iter().map(|m| format!(
+        //         "\n\t<meta {}=\"{}\" content=\"{}\" />", m.key(), m.value(), m.content()
+        //     )).collect(),
+        //     None => "".into(),
+        // };
+        let title: String = format!("\n\t<title>{}</title>", self.title);
+        let charset: String = format!("\n\t<meta charset=\"{}\" />", self.charset);
+        let meta_tags: String = self.meta.borrow().iter().map(|m| format!(
+            "\n\t<meta {}=\"{}\" content=\"{}\" />", m.key(), m.value(), m.content()
+        )).collect();
 
         format!(
             "<head>{}{}{}\n</head>",
@@ -133,30 +135,51 @@ impl Stringify for HtmlHead {
     }
 }
 impl HtmlHead {
-    pub fn with_title(mut self, title: &str) -> Self { self.title = Some(title.into()); self }
-    pub fn with_charset(mut self, charset: &str) -> Self { self.charset = Some(charset.into()); self }
-    pub fn with_meta(mut self, meta: Vec<MetaTag>) -> Self { self.meta = Some(RefCell::new(meta)); self }
+    pub fn title(mut self, title: &str) -> Self { self.title = title.into(); self }
+    pub fn charset(mut self, charset: &str) -> Self { self.charset = charset.into(); self }
+    // pub fn with_meta(mut self, meta: Vec<MetaTag>) -> Self { self.meta = Some(RefCell::new(meta)); self }
 
-    pub fn add_meta(mut self, kind: MetaKind) -> Self {
-        if let None = self.meta { self.meta = Some(RefCell::new(vec![])) }
+    pub fn meta(mut self, kind: MetaKind) -> Self {
+        // if let None = self.meta { self.meta = Some(RefCell::new(vec![])) }
         self.meta
-            .as_mut()
-            .unwrap()
             .get_mut()
             .push(MetaTag::from_kind(kind));
         self
     }
 }
 impl HtmlHead {
-    pub fn add_custom_meta(mut self, key: &str, value: &str, content: &str) -> Self {
-        if let None = self.meta { self.meta = Some(RefCell::new(vec![])) }
+    pub fn custom_meta(mut self, key: &str, value: &str, content: &str) -> Self {
         self.meta
-            .as_mut()
-            .unwrap()
             .get_mut()
             .push(MetaTag::new(key, value, content));
         self
     }
+}
+impl HtmlHead {
+    pub fn abstract_(self, value: &'static str) -> Self { self.meta(MetaKind::Abstract(value)) }
+    pub fn author(self, value: &'static str) -> Self { self.meta(MetaKind::Author(value)) }
+    pub fn category(self, value: &'static str) -> Self { self.meta(MetaKind::Category(value)) }
+    pub fn classification(self, value: &'static str) -> Self { self.meta(MetaKind::Classification(value)) }
+    pub fn copyright(self, value: &'static str) -> Self { self.meta(MetaKind::Copyright(value)) }
+    pub fn coverage(self, value: &'static str) -> Self { self.meta(MetaKind::Coverage(value)) }
+    pub fn description(self, value: &'static str) -> Self { self.meta(MetaKind::Description(value)) }
+    pub fn designer(self, value: &'static str) -> Self { self.meta(MetaKind::Designer(value)) }
+    pub fn directory(self, value: &'static str) -> Self { self.meta(MetaKind::Directory(value)) }
+    pub fn distribution(self, value: &'static str) -> Self { self.meta(MetaKind::Distribution(value)) }
+    pub fn identifier_url(self, value: &'static str) -> Self { self.meta(MetaKind::IdentifierUrl(value)) }
+    pub fn keywords(self, value: &'static str) -> Self { self.meta(MetaKind::Keywords(value)) }
+    pub fn language(self, value: &'static str) -> Self { self.meta(MetaKind::Language(value)) }
+    pub fn owner(self, value: &'static str) -> Self { self.meta(MetaKind::Owner(value)) }
+    pub fn rating(self, value: &'static str) -> Self { self.meta(MetaKind::Rating(value)) }
+    pub fn reply_to(self, value: &'static str) -> Self { self.meta(MetaKind::ReplyTo(value)) }
+    pub fn revised(self, value: &'static str) -> Self { self.meta(MetaKind::Revised(value)) }
+    pub fn revisit_after(self, value: &'static str) -> Self { self.meta(MetaKind::RevisitAfter(value)) }
+    pub fn robots(self, value: &'static str) -> Self { self.meta(MetaKind::Robots(value)) }
+    pub fn subject(self, value: &'static str) -> Self { self.meta(MetaKind::Subject(value)) }
+    pub fn summary(self, value: &'static str) -> Self { self.meta(MetaKind::Summary(value)) }
+    pub fn topic(self, value: &'static str) -> Self { self.meta(MetaKind::Topic(value)) }
+    pub fn url(self, value: &'static str) -> Self { self.meta(MetaKind::Url(value)) }
+    
 }
 
 #[derive(Default)]
