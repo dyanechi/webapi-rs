@@ -3,9 +3,7 @@ use std::ops::Deref;
 // trait HtmlElement { }
 
 #[derive(Default)]
-struct CssStyle {
-    
-}
+struct CssStyle {}
 
 #[derive(Default, Clone)]
 struct HtmlInlineAttr {
@@ -102,13 +100,14 @@ pub struct DivElement {
 //     }
 // }
 
-pub mod pak {
+#[cfg(test)]
+mod tests {
     use super::*;
-    pub fn k() {
+    #[test]
+    pub fn create_div() {
         // let el = DivElement::new();
         let div = Div::default();
         
-        
+        assert_eq!(div.content, "")
     }
-
 }
