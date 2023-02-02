@@ -1,4 +1,4 @@
-# Pure Rust Web API Framework
+# Rust Web API Framework
 
 This crate is going to be a framework for Web API.
 It will allow developers to build websites using pure Rust without
