@@ -1,4 +1,4 @@
-use webapi_lib::html::{self, Deploy, tags::MetaKind, Builder};
+use webapi_lib::html::{self, Deploy, tags::MetaKind, Builder, LinkTag};
 
 fn main() {
     let head = html::HtmlHead::new()
@@ -8,6 +8,18 @@ fn main() {
         .keywords("rust, web, api")
         .meta(MetaKind::OgEmail("support@email.com"))
         .meta(MetaKind::Custom("ad-tracker", "BN39B35490-45-0"))
+        .link(
+            LinkTag::new().rel("pizza").href("https://yomamma.com").build()
+        )
+        // .link()
+        //     .rel("Hamburger")
+        //     .href("https://yomamma.com")
+        //     .append()
+        // .link(|o| o
+        //     .rel("Hamburger")
+        //     .href("https://yomamma.com")
+        //     .append()
+        // )
         .build();
         
     let body = html::HtmlBody::default();

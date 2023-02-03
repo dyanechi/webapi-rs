@@ -6,6 +6,7 @@ pub struct HtmlHeadBuilder {
     title: String,
     charset: String,
     meta: RefCell<Vec<MetaTag>>,
+    link: RefCell<Vec<LinkTag>>,
 }
 impl Builder<HtmlHead> for HtmlHeadBuilder {
     fn build(self) -> HtmlHead {
@@ -24,6 +25,7 @@ impl Default for HtmlHeadBuilder {
             title: "WebApi Test Website".into(),
             charset: "utf-8".into(),
             meta: RefCell::new(vec![]),
+            link: RefCell::new(vec![]),
         }
     }
 }
@@ -31,6 +33,7 @@ impl HtmlHeadBuilder {
     pub fn title(mut self, title: &str) -> Self { self.title = title.into(); self }
     pub fn charset(mut self, charset: &str) -> Self { self.charset = charset.into(); self }
     pub fn meta(mut self, kind: MetaKind) -> Self { self.meta.get_mut().push(MetaTag::from_kind(kind)); self }
+    pub fn link(mut self, link: LinkTag) -> Self { self.link.get_mut().push(link); self }
 }
 impl HtmlHeadBuilder {
     pub fn abstract_(self, value: &'static str) -> Self { self.meta(MetaKind::Abstract(value)) }
