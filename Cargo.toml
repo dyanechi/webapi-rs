@@ -9,3 +9,9 @@ members = [
     "webapi-lib"
 ]
 
+[workspace.package]
+version = "0.1.1"
+edition = "2021"
+authors = ["Dawid Janeczko"]
+description = "A framework that generates HTML, CSS and JS out of Rust project"
+documentation = ""
