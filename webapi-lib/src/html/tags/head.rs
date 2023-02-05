@@ -78,9 +78,7 @@ impl HtmlHead {
     }
 }
 impl Default for HtmlHead {
-    fn default() -> Self {
-        HtmlHead::new().build()
-    }
+    fn default() -> Self { HtmlHead::new().build() }
 }
 impl Stringify for HtmlHead {
     fn stringify(&self) -> String {

@@ -1,17 +1,6 @@
 use super::*;
+use crate::pub_use_mod;
 
-pub mod head;
-pub mod body;
-pub mod doc;
+pub_use_mod!(head, body, doc, meta, link);
 
-pub mod link;
-
-mod tags;
-mod meta;
-
-pub use tags::*;
-pub use meta::*;
-
-// use head::*;
-// use body::*;
-// use doc::*;
+mod tags; 
