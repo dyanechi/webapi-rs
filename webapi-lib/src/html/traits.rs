@@ -27,7 +27,7 @@ impl Stringify for Comp {
     }
 }
 impl Component for Comp {
-    fn append(self, other: impl Component) { }
+    fn append(self, other: impl Component) {}
 }
 
 pub trait HtmlElement {}
