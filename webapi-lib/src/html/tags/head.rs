@@ -1,4 +1,4 @@
-use std::{cell::RefCell, collections::HashMap};
+use std::{cell::RefCell, collections::HashMap, vec};
 
 use super::*;
 
@@ -11,12 +11,13 @@ pub struct HtmlHeadBuilder {
 impl Builder<HtmlHead> for HtmlHeadBuilder {
     fn build(self) -> HtmlHead {
         let mut meta: HashMap<String, MetaTag> = HashMap::new();
+        // let link: RefCell<Vec<LinkTag>> = RefCell::new(vec![]);
 
         for tag in self.meta.take() {
             meta.insert(tag.value().to_string(), tag);
         }
 
-        HtmlHead { title: self.title, charset: self.charset, meta }
+        HtmlHead { title: self.title, charset: self.charset, meta, link: self.link }
     }
 }
 impl Default for HtmlHeadBuilder {
@@ -71,6 +72,7 @@ pub struct HtmlHead {
     title: String,
     charset: String,
     meta: HashMap<String, MetaTag>,
+    link: RefCell<Vec<LinkTag>>,
 }
 impl HtmlHead {
     pub fn new() -> HtmlHeadBuilder {
@@ -89,9 +91,15 @@ impl Stringify for HtmlHead {
             m.key(), m.value(), m.content()
         )).collect();
 
+        let link_tags: String = self.link
+            .borrow()
+            .iter()
+            .map(|l| l.stringify())
+            .collect();
+
         format!(
-            "<head>{}{}{}\n</head>",
-            title, charset, meta_tags,
+            "<head>{}{}{}{}\n</head>",
+            title, charset, meta_tags, link_tags,
         ).lines().map(|line| format!("\n\t{line}")).collect()
     }
 }

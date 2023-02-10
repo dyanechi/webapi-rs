@@ -22,7 +22,7 @@ impl HtmlNode {
 }
 
 macro_rules! tag_builder {
-    ( $impl_name:ident [ $( $fn_name:ident ),*  ] ) => {
+    ( $impl_name:ident [ $( $fn_name:ident ),* ] ) => {
         paste! {
             pub struct $impl_name { attrs: HashMap<String, String> }
             pub struct [<$impl_name Builder>] { attrs: HashMap<String, String>  }
@@ -64,7 +64,7 @@ macro_rules! tag_builder {
                     });
             
                     if s.is_empty() { "".to_string() } else {
-                        format!("\n\t<s {}>", s)
+                        format!("\n\t<link {}>", s)
                     }
                 }
             }

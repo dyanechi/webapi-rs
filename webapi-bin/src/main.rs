@@ -11,6 +11,9 @@ fn main() {
         .link(
             LinkTag::new().rel("pizza").href("https://yomamma.com").build()
         )
+        .link(
+            LinkTag::new().rel("fries").href("https://yomamma.com").build()
+        )
         // .link()
         //     .rel("Hamburger")
         //     .href("https://yomamma.com")
