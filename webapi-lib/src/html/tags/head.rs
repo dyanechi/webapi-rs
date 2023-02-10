@@ -75,12 +75,12 @@ pub struct HtmlHead {
     link: RefCell<Vec<LinkTag>>,
 }
 impl HtmlHead {
-    pub fn new() -> HtmlHeadBuilder {
+    pub fn builder() -> HtmlHeadBuilder {
         HtmlHeadBuilder::default()
     }
 }
 impl Default for HtmlHead {
-    fn default() -> Self { HtmlHead::new().build() }
+    fn default() -> Self { HtmlHead::builder().build() }
 }
 impl Stringify for HtmlHead {
     fn stringify(&self) -> String {

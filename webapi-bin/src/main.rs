@@ -1,7 +1,7 @@
 use webapi_lib::html::{self, Deploy, tags::MetaKind, Builder, LinkTag};
 
 fn main() {
-    let head = html::HtmlHead::new()
+    let head = html::HtmlHead::builder()
         .title("Rust Framework Test")
         .author("dyanechi")
         .description("Website developed with pure Rust")

@@ -28,7 +28,7 @@ impl HtmlDoc {
 }
 impl Stringify for HtmlDoc {
     fn stringify(&self) -> String {
-        format!("{}", self.str.as_ref().expect("should be deployed"))
+        format!("{}", self.str.as_ref().expect("should be deployed").to_string())
     }
 }
 impl Deploy for HtmlDoc {
