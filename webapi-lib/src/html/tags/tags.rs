@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub use super::{doc::*, head::*, body::*, link::*, meta::*};
 use paste::paste;
 
@@ -52,10 +54,27 @@ macro_rules! tag_builder_bc {
     };
 }
 
+fn default_event() {
+
+}
+
 macro_rules! build_tag {
     ( $( $tag_name:ident),* $(,)* ) => {
         paste! {
-            $( pub struct [<$tag_name Tag>] {} )*
+            $(
+                #[derive(Default)]
+                pub struct [<$tag_name Tag>] {
+                    events: HashMap<String, Box<dyn FnOnce()>>,
+                }
+                impl [<$tag_name Tag>] {
+                    pub fn new() -> Self { Default::default() }
+
+                    fn event(&mut self, event: &str, f: dyn FnOnce()) {
+                        let e  = self.events.get(event);
+                        self.events.insert(event.to_string(), Box::new(default_event));
+                    }
+                }
+            )*
         }
     }
 }
@@ -181,6 +200,14 @@ build_tag!(
     Wbr,
 );
 
+struct Test {
+    map: HashMap<String, Box<dyn Fn()>>
+}
+impl Test {
+    fn t(&mut self) {
+        self.map.insert("key".to_string(), Box::new(default_event));
+    } 
+}
 
 // rsx!(
 //     Div {
@@ -200,6 +227,9 @@ mod tests {
 
     #[test]
     fn tags_build() {
-        let option = OptionTag {};
+        let anchor = ATag::new();
+        anchor.event("click", || println!("no"));
+
+        let option = OptionTag::default();
     }
 }
