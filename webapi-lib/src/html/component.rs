@@ -1,7 +1,5 @@
 use std::ops::Deref;
 
-// trait HtmlElement { }
-
 #[derive(Default)]
 struct CssStyle {}
 
@@ -19,7 +17,6 @@ impl HtmlInlineAttr {
 
 #[derive(Default)]
 struct Element {
-    // child: C,
     pub id: String,
     pub inner_html: String,
     pub class_name: String,
@@ -30,17 +27,6 @@ struct Element {
     pub client_right: u32,
     pub client_bottom: u32,
 }
-// impl Deref for Element {
-//     type Target = T;
-//     fn deref(&self) -> &Self::Target {
-//         &self.child
-//     }
-// }
-// impl<C> Default for Element<C> {
-//     fn default() -> Element<C> {
-//         Element::<C>::default()
-//     }
-// }
 
 
 #[derive(Default)]
@@ -56,12 +42,6 @@ struct HtmlElement {
     pub offset_left: u32,
     pub offset_parent: Box<HtmlElement>,
 }
-// impl<T> Deref for HtmlElement<T> {
-//     type Target = T;
-//     fn deref(&self) -> &Self::Target {
-//         &self.child
-//     }
-// }
 
 macro_rules! create_tag {
     ($name:ident { $( $field:ident : $type:ty ),* $(,)* }) => {
@@ -92,13 +72,6 @@ pub struct DivElement {
     height: u32,
 }
 
-// type HtmlElem<T> = Element<HtmlElement<T>>;
-
-// impl DivElement {
-//     fn new() -> HtmlElem<Self> {
-//         HtmlElem::<DivElement>::default()
-//     }
-// }
 
 #[cfg(test)]
 mod tests {

@@ -69,7 +69,7 @@ macro_rules! build_tag {
                 impl [<$tag_name Tag>] {
                     pub fn new() -> Self { Default::default() }
 
-                    fn event(&mut self, event: &str, f: dyn FnOnce()) {
+                    fn event<F>(&mut self, event: &str, f: F) where F: FnOnce() {
                         let e  = self.events.get(event);
                         self.events.insert(event.to_string(), Box::new(default_event));
                     }
@@ -209,15 +209,6 @@ impl Test {
     } 
 }
 
-// rsx!(
-//     Div {
-//         Div {
-//             Div {
-
-//             }
-//         }
-//     }
-// );
 
 
 
@@ -227,7 +218,7 @@ mod tests {
 
     #[test]
     fn tags_build() {
-        let anchor = ATag::new();
+        let mut anchor = ATag::new();
         anchor.event("click", || println!("no"));
 
         let option = OptionTag::default();
