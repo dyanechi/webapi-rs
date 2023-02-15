@@ -1,3 +1,11 @@
+use super::{HtmlBody, HtmlDoc};
+
+
+
+pub fn create_root(id: &'static str) -> HtmlDoc {
+    HtmlDoc::builder()
+    .build()
+}
 
 // #[cfg(test)]
 // mod tests {
